@@ -1,0 +1,49 @@
+#tasks{
+    width: 375px;
+    
+    header{
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+        h2{
+            font-size: 24px;
+        font-weight: bold;
+        letter-spacing:-3px;
+        color: #707070;
+        }
+        .user{
+            width:36px;
+            height:36px;
+            border-radius:50px;
+            border: 1px solid #ccc;
+        }
+
+    }
+    main{
+        form{
+        width:100%;
+        display:flex;
+        flex-direction:column;
+        color: #707070;
+        label{
+            font-size:16px;
+            margin-top: 16px;
+        }
+        input,button{
+            margin-top:8px;
+            border-radius: 8px;
+            height:36px;
+        }
+        button{
+            border:0;
+            background-color:#DBE9FF;
+            font-size: 16px;
+
+        }
+
+
+        }
+    }
+
+}
