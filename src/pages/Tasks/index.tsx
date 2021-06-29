@@ -1,6 +1,8 @@
 
 import "./styles.scss"
 
+import { Task } from '../../components/task'
+
 export function Tasks() {
 
     return (
@@ -15,7 +17,10 @@ export function Tasks() {
                     <input type="text" name="task" id="newTask" />
                     <button type="submit">Adicionar</button>
                 </form>
-
+                <Task />
+                <Task />
+                <Task />
+                <Task />
             </main>
         </div>
     )
