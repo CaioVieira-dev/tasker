@@ -4,4 +4,5 @@
     display:flex;
     justify-content: center;
     background-color:#FAFAFA;
+    min-height:100vh ;
 }

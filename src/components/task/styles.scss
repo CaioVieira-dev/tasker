@@ -1,10 +1,12 @@
 .task{
     margin-top:16px;
     display:flex;
+    width:100%;
     border-bottom: 1px solid #707070;
     align-items: center;
     padding:8px 0;
     position:relative;
+    justify-content: space-between;
     .check{
         display: none;
     }
@@ -14,16 +16,44 @@
         height:20px;
         border: 1px solid #707070;
         margin-right: 8px;
+        flex: 0.4;
+    }
+    form{
+        textarea{
+            min-height: 80px;
+            padding:8px 12px;
+            border:0;
+            outline:0;
+        }
+        .wrapper{
+            width:100%;
+            display:flex;
+            gap:16px;
+            button{
+                width:100%;
+                outline:0;
+                border: 0;
+                background-color:#DBE9FF;
+                &.cancel{
+                    background-color: #F28383;
+                    color: white;
+                 }
+            }
+            
+        }
     }
     p{
         color:#707070;
+        flex:8;
     }
     .options{
         margin-left: 8px;
         background-color: transparent;
         outline:0;
         border:0;
-        
+    
+        justify-self: end;
+        flex: 0.4;
     }
     .optionsBox{
         position:absolute;
@@ -59,7 +89,7 @@
             position: absolute;
             left:-3px;
         }
-        p{
+       > p{
             color:#C4C4C4;
             text-decoration: line-through;
         }

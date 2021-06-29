@@ -20,7 +20,7 @@
         }
 
     }
-    main{
+    >main{
         form{
         width:100%;
         display:flex;
@@ -38,7 +38,7 @@
         input{
             padding-left: 8px;
         }
-        button{
+        >button{
             border:0;
             background-color:#DBE9FF;
             font-size: 16px;
