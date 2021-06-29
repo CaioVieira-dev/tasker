@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5" height="18" viewBox="0 0 5 18">
+  <g id="Icon_feather-more-vertical" data-name="Icon feather-more-vertical" transform="translate(-15 -4.5)">
+    <path id="Caminho_1" data-name="Caminho 1" d="M18.5,17.5a1,1,0,1,1-1-1A1,1,0,0,1,18.5,17.5Z" transform="translate(0 -4)" fill="#707070" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    <path id="Caminho_2" data-name="Caminho 2" d="M18.5,7a1,1,0,1,1-1-1A1,1,0,0,1,18.5,7Z" fill="#707070" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    <path id="Caminho_3" data-name="Caminho 3" d="M18.5,28a1,1,0,1,1-1-1A1,1,0,0,1,18.5,28Z" transform="translate(0 -8)" fill="#707070" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  </g>
+</svg>

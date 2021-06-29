@@ -5,7 +5,7 @@
     align-items: center;
     padding:8px 0;
     position:relative;
-    img{
+    .check{
         display: none;
     }
     .box{
@@ -18,8 +18,43 @@
     p{
         color:#707070;
     }
+    .options{
+        margin-left: 8px;
+        background-color: transparent;
+        outline:0;
+        border:0;
+        
+    }
+    .optionsBox{
+        position:absolute;
+        right:16px;
+        background-color:#FAFAFA;
+        padding:0 24px;
+        border-radius: 8px;
+        -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.22); 
+        box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.22);
+        p{
+            padding:8px 0;
+            &:hover{
+                text-decoration: underline;
+            }
+            &+p{
+                border-top: 1px solid #707070;
+                color:#F28383;
+                
+            }
+        }
+
+
+    }
+    div[role='options']{
+        visibility: hidden;
+    }
+    div[role='options'].visible{
+        visibility: visible;
+    }
     &.done{
-        img{
+        .check{
             display: block;
             position: absolute;
             left:-3px;
