@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth'
 import './styles.scss';
 
 export function Login() {
-    const { signInWithGoogle, user } = useAuth();
+    const { signInWithGoogle, user, signInWithEmailAndPassword } = useAuth();
     const history = useHistory();
 
     async function handleSignInWithGoogle() {
@@ -18,11 +18,16 @@ export function Login() {
         }
         history.push('/');
     }
+    async function handleSignInWithEmailAndPassword(e: any) {
+        e.preventDefault();
+        await signInWithEmailAndPassword(e.target.user.value, e.target.password.value)
+
+    }
 
     return (
         <div id="login">
             <h1>Tasker</h1>
-            <form>
+            <form onSubmit={(e) => handleSignInWithEmailAndPassword(e)}>
                 <label htmlFor="user">Email</label>
                 <input type="email" name="user" placeholder="Email" />
                 <label htmlFor="password">Senha</label>

@@ -10,6 +10,7 @@ type User = {
 type AuthContextType = {
     user: User | undefined;
     signInWithGoogle: () => Promise<void>;
+    signInWithEmailAndPassword: (email: string, password: string) => Promise<void>;
 }
 
 type AuthContextProviderProps = {
@@ -26,17 +27,18 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
-                const { displayName, photoURL, uid } = user;
-
-                if (!displayName || !photoURL) {
-                    throw new Error('Missing information from Google Account.')
+                const { displayName, photoURL, uid, email } = user;
+                if (!email) {
+                    throw new Error('User missing email address')
                 }
 
                 setUser({
                     id: uid,
-                    name: displayName,
-                    avatar: photoURL
+                    name: displayName ? displayName : email,
+                    avatar: photoURL ? photoURL : "markup",
                 })
+
+
             }
         })
 
@@ -62,12 +64,33 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
                 name: displayName,
                 avatar: photoURL
             })
+
         }
 
     }
+    async function signInWithEmailAndPassword(email: string, password: string) {
+        try {
+            const result = await firebase.auth().signInWithEmailAndPassword(email, password)
+            if (result.user && result.user.email) {
+                //console.log(result)
+                const { uid, email } = result.user;
+
+
+                setUser({
+                    id: uid,
+                    name: email,
+                    avatar: "markup"
+                })
+                console.log('logado com email e senha')
+
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
-        <AuthContext.Provider value={{ user, signInWithGoogle }}>
+        <AuthContext.Provider value={{ user, signInWithGoogle, signInWithEmailAndPassword }}>
             {props.children}
         </AuthContext.Provider>
     );
