@@ -5,43 +5,43 @@ import { Task } from '../../components/task'
 import { useEffect, useState } from "react"
 import { database } from '../../services/firebase'
 
+import { useAuth } from '../../hooks/useAuth'
+type TaskType = {
+    id: number;
+    task: string;
+    checked: boolean
+}
+type TaskListType = TaskType[]
 
 
 export function Tasks() {
 
-    const [tasklist, setTasklist] = useState([
-        {
-            id: 1,
-            checked: false,
-            task: "Marcação para tarefa Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam, ea ut. Accusamus earum quasi nulla fugiat quia, quaerat, vitae eum commodi adipisci voluptas reprehenderit provident, blanditiis ipsa. Eum, eius id."
-        },
-        {
-            id: 2,
-            checked: false,
-            task: "Marcação para tarefa Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam, ea ut. Accusamus earum quasi nulla fugiat quia, quaerat, vitae eum commodi adipisci voluptas reprehenderit provident, blanditiis ipsa. Eum, eius id."
-        },
-        {
-            id: 3,
-            checked: false,
-            task: "Marcação para tarefa Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam, ea ut. Accusamus earum quasi nulla fugiat quia, quaerat, vitae eum commodi adipisci voluptas reprehenderit provident, blanditiis ipsa. Eum, eius id."
-        },
-        {
-            id: 4,
-            checked: false,
-            task: "Marcação para tarefa Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam, ea ut. Accusamus earum quasi nulla fugiat quia, quaerat, vitae eum commodi adipisci voluptas reprehenderit provident, blanditiis ipsa. Eum, eius id."
-        },
-    ])
+    const [tasklist, setTasklist] = useState<TaskListType>();
 
     const [taskField, setTaskField] = useState('');
+    const { user } = useAuth();
 
     async function test() {
         const tasksRef = database.collection('user_tasks').doc('uI7mJMLpTWfC9cxfAtfh').collection('user');
         const res = await tasksRef.get();
 
         if (res) {
-            console.log('resposta ', res.docs.map(doc => doc.data()))
+            // console.log('resposta ', res.docs.map(doc => doc.data().task))
+
+            const tasks = res.docs.map((doc, index) => {
+                const data = doc.data()
+                const taskObj: TaskType = {
+                    id: index,
+                    task: data.task,
+                    checked: data.checked
+                }
+                return taskObj;
+
+            })
+            setTasklist(tasks)
+
         } else {
-            console.log("without res")
+            console.error("without res")
         }
     }
     /*
@@ -56,23 +56,27 @@ export function Tasks() {
     */
     test();
     //testSave()
+
     function createTask(e: any) {
         e.preventDefault();
         if (taskField !== '') {
+            /*
             tasklist.push({
                 id: tasklist[tasklist.length - 1].id + 1,
                 task: taskField,
                 checked: false
             })
+            */
             setTaskField('');
         }
     }
 
     function deleteTask(taskId: number) {
-        setTasklist(tasklist.filter(task => task.id !== taskId));
+
+        setTasklist(tasklist?.filter(task => task.id !== taskId));
     }
     function updateTask(taskId: number, updatedTask: string) {
-        setTasklist(tasklist.map(task => {
+        setTasklist(tasklist?.map(task => {
             if (task.id === taskId) {
                 return {
                     id: task.id,
@@ -82,6 +86,12 @@ export function Tasks() {
             }
             return task;
         }))
+    }
+
+    if (!user) {
+        return (
+            <div><p>carregando</p></div>
+        )
     }
 
     return (
@@ -96,7 +106,7 @@ export function Tasks() {
                     <input onChange={(e) => setTaskField(e.target.value)} value={taskField} type="text" name="task" id="newTask" />
                     <button type="submit">Adicionar</button>
                 </form>
-                {tasklist.map((task, index) => {
+                {tasklist?.map((task, index) => {
                     return <Task
                         key={`task_${index}`}
                         tId={task.id}
@@ -107,6 +117,5 @@ export function Tasks() {
                 })}
 
             </main>
-        </div>
-    )
+        </div>)
 }
