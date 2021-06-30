@@ -6,7 +6,7 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div id="App">
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Tasks} />
