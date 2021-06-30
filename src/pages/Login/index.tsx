@@ -1,11 +1,23 @@
+import { useHistory } from 'react-router-dom'
 
 import facebook from '../../assets/facebook.svg';
 import google from '../../assets/google.svg';
 import github from '../../assets/github.svg';
 
+import { useAuth } from '../../hooks/useAuth'
+
 import './styles.scss';
 
 export function Login() {
+    const { signInWithGoogle, user } = useAuth();
+    const history = useHistory();
+
+    async function handleSignInWithGoogle() {
+        if (!user) {
+            await signInWithGoogle()
+        }
+        history.push('/');
+    }
 
     return (
         <div id="login">
@@ -24,7 +36,7 @@ export function Login() {
             <div className="separator">
                 <p>ou</p>
             </div>
-            <button><img src={google} alt="Logo Google" /><span>Entrar com o google</span></button>
+            <button onClick={handleSignInWithGoogle}><img src={google} alt="Logo Google" /><span>Entrar com o google</span></button>
             <button><img src={facebook} alt="Logo facebook" /><span>Entrar com o Facebook</span></button>
             <button><img src={github} alt="Logo github" /><span>Entrar com o Github</span></button>
         </div>
