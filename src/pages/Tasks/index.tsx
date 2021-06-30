@@ -35,7 +35,7 @@ export function Tasks() {
     const [taskField, setTaskField] = useState('');
 
     async function test() {
-        const tasksRef = database.collection('user_tasks');
+        const tasksRef = database.collection('user_tasks').doc('uI7mJMLpTWfC9cxfAtfh').collection('user');
         const res = await tasksRef.get();
 
         if (res) {
@@ -44,8 +44,18 @@ export function Tasks() {
             console.log("without res")
         }
     }
-
+    /*
+        async function testSave() {
+            const tasksRef = database.collection('user_tasks').doc("uI7mJMLpTWfC9cxfAtfh");
+            const info = {
+                checked: true,
+                task: 'teste de função de salvar'
+            }
+            await tasksRef.collection('user').add(info);
+        }
+    */
     test();
+    //testSave()
     function createTask(e: any) {
         e.preventDefault();
         if (taskField !== '') {
