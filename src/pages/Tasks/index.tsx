@@ -2,7 +2,8 @@
 import "./styles.scss"
 
 import { Task } from '../../components/task'
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { database } from '../../services/firebase'
 
 
 
@@ -33,7 +34,18 @@ export function Tasks() {
 
     const [taskField, setTaskField] = useState('');
 
+    async function test() {
+        const tasksRef = database.collection('user_tasks');
+        const res = await tasksRef.get();
 
+        if (res) {
+            console.log('resposta ', res.docs.map(doc => doc.data()))
+        } else {
+            console.log("without res")
+        }
+    }
+
+    test();
     function createTask(e: any) {
         e.preventDefault();
         if (taskField !== '') {
