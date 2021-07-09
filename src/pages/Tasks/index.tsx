@@ -2,91 +2,42 @@
 import "./styles.scss"
 
 import { Task } from '../../components/task'
-import { useEffect, useState } from "react"
-import { database } from '../../services/firebase'
+import { FormEvent, useEffect, useState } from "react"
+
+import { Header } from '../../components/Header'
 
 import { useAuth } from '../../hooks/useAuth'
-type TaskType = {
-    id: number;
-    task: string;
-    checked: boolean
-}
-type TaskListType = TaskType[]
+import { useFirestore } from '../../hooks/useFirestore'
+
 
 
 export function Tasks() {
 
-    const [tasklist, setTasklist] = useState<TaskListType>();
-
     const [taskField, setTaskField] = useState('');
     const { user } = useAuth();
+    const { tasklist, saveNewTask, getUserTasks } = useFirestore()
 
-    async function test() {
-        const tasksRef = database.collection('user_tasks').doc('uI7mJMLpTWfC9cxfAtfh').collection('user');
-        const res = await tasksRef.get();
 
-        if (res) {
-            // console.log('resposta ', res.docs.map(doc => doc.data().task))
-
-            const tasks = res.docs.map((doc, index) => {
-                const data = doc.data()
-                const taskObj: TaskType = {
-                    id: index,
-                    task: data.task,
-                    checked: data.checked
-                }
-                return taskObj;
-
-            })
-            setTasklist(tasks)
-
-        } else {
-            console.error("without res")
-        }
-    }
-    /*
-        async function testSave() {
-            const tasksRef = database.collection('user_tasks').doc("uI7mJMLpTWfC9cxfAtfh");
-            const info = {
-                checked: true,
-                task: 'teste de função de salvar'
-            }
-            await tasksRef.collection('user').add(info);
-        }
-    */
-    test();
-    //testSave()
-
-    function createTask(e: any) {
+    async function newTask(e: FormEvent) {
         e.preventDefault();
-        if (taskField !== '') {
-            /*
-            tasklist.push({
-                id: tasklist[tasklist.length - 1].id + 1,
-                task: taskField,
-                checked: false
-            })
-            */
-            setTaskField('');
+        if (taskField.trim() === '') {
+            return
         }
+        let teste
+        try {
+            teste = await saveNewTask(taskField)
+        } catch (err) {
+            console.error(err)
+        }
+        console.log(teste)
+
     }
 
-    function deleteTask(taskId: number) {
+    useEffect(() => {
+        if (!user) { return }
+        getUserTasks();
+    }, [user])
 
-        setTasklist(tasklist?.filter(task => task.id !== taskId));
-    }
-    function updateTask(taskId: number, updatedTask: string) {
-        setTasklist(tasklist?.map(task => {
-            if (task.id === taskId) {
-                return {
-                    id: task.id,
-                    task: updatedTask,
-                    checked: task.checked
-                }
-            }
-            return task;
-        }))
-    }
 
     if (!user) {
         return (
@@ -96,23 +47,18 @@ export function Tasks() {
 
     return (
         <div id="tasks">
-            <header>
-                <h2>Tasker</h2>
-                <div className="user"></div>
-            </header>
+            <Header />
             <main>
-                <form onSubmit={(e) => { createTask(e) }} >
+                <form onSubmit={(e) => { e.preventDefault(); newTask(e) }} >
                     <label htmlFor="task">Nova tarefa:</label>
                     <input onChange={(e) => setTaskField(e.target.value)} value={taskField} type="text" name="task" id="newTask" />
                     <button type="submit">Adicionar</button>
                 </form>
                 {tasklist?.map((task, index) => {
                     return <Task
-                        key={`task_${index}`}
+                        key={task.id}
                         tId={task.id}
-                        deleteTask={deleteTask}
                         checked={task.checked}
-                        updateTask={updateTask}
                         task={task.task} />
                 })}
 
