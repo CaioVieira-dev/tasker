@@ -64,7 +64,7 @@ export function Task(props: TaskPropsType) {
                 (<p>{props.task}</p>)}
 
             <button {...buttonProps} className="options" onClick={() => setIsOpen(true)}><img src={more} alt="Opções da tarefa" /></button>
-            <div className={isOpen ? "optionsBox visible" : "optionsBox"} role="options">
+            <div className={isOpen ? "optionsBox visible" : "optionsBox"} role="button">
                 <p onClick={() => setIsEditing(true)}><a {...itemProps[0]} className="edit">Editar</a></p>
                 <p onClick={() => deleteTask(props.tId)}><a {...itemProps[1]} className="delete">Excluir</a></p>
             </div>

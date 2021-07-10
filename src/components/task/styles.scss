@@ -77,10 +77,10 @@
 
 
     }
-    div[role='options']{
+    div[role='button']{
         visibility: hidden;
     }
-    div[role='options'].visible{
+    div[role='button'].visible{
         visibility: visible;
     }
     &.done{

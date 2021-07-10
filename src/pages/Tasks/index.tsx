@@ -26,17 +26,18 @@ export function Tasks() {
         let teste
         try {
             teste = await saveNewTask(taskField)
+            setTaskField('')
         } catch (err) {
             console.error(err)
+            return;
         }
         console.log(teste)
-
     }
 
     useEffect(() => {
         if (!user) { return }
         getUserTasks();
-    }, [user])
+    }, [user, getUserTasks])
 
 
     if (!user) {

@@ -62,6 +62,7 @@ export function FirestoreContextProvider(props: FirestoreContextProviderProps) {
         } catch (error) {
             console.log(error)
         }
+        console.log(res)
     }
     async function toggleCheck(taskId: string) {
         const taskRef = database.collection('user_tasks').doc(`${user?.id}`).collection('user').doc(taskId);

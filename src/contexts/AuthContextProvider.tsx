@@ -13,6 +13,8 @@ type AuthContextType = {
     signInWithGoogle: () => Promise<void>;
     signInWithEmailAndPassword: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
+    createNewUserWithEmailAndPassword: (email: string, password: string) => Promise<void>;
+    signInWithGitHub: () => Promise<void>;
 }
 
 type AuthContextProviderProps = {
@@ -49,7 +51,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         return () => {
             unsubscribe();
         }
-    }, [])
+    }, [history])
 
     async function signInWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -57,6 +59,27 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         const result = await auth.signInWithPopup(provider);
 
         if (result.user) {
+            const { displayName, photoURL, uid } = result.user;
+
+            if (!displayName || !photoURL) {
+                throw new Error('Missing information from GitHub Account.')
+            }
+
+            setUser({
+                id: uid,
+                name: displayName,
+                avatar: photoURL
+            })
+
+        }
+
+    }
+    async function signInWithGitHub() {
+        const provider = new firebase.auth.GithubAuthProvider();
+        const result = await auth.signInWithPopup(provider);
+
+        if (result.user) {
+
             const { displayName, photoURL, uid } = result.user;
 
             if (!displayName || !photoURL) {
@@ -72,6 +95,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         }
 
     }
+
     async function signInWithEmailAndPassword(email: string, password: string) {
         try {
             const result = await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -92,6 +116,32 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
             console.error(err);
         }
     }
+    async function createNewUserWithEmailAndPassword(email: string, password: string) {
+        if (!email || !password) {
+            console.error('Missing email or password')
+            return;
+        }
+        let res;
+        try {
+            res = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            if (res.user && res.user.email) {
+                //console.log(result)
+                const { uid, email } = res.user;
+
+
+                setUser({
+                    id: uid,
+                    name: email,
+                    avatar: "markup"
+                })
+                console.log('logado com email e senha')
+
+            }
+        } catch (err) {
+            console.error(err)
+            throw new Error(err)
+        }
+    }
     async function signOut() {
         try {
             firebase.auth().signOut();
@@ -106,7 +156,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
             user,
             signInWithGoogle,
             signInWithEmailAndPassword,
-            signOut
+            signOut,
+            createNewUserWithEmailAndPassword,
+            signInWithGitHub
+
         }}>
             {props.children}
         </AuthContext.Provider>
