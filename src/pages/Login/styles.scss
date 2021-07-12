@@ -14,7 +14,7 @@
         display:flex;
         flex-direction:column;
         margin-top:48px;
-        label:last-of-type{
+        label:not(:first-of-type){
             margin-top:16px;
             display: inline-block;
         }
