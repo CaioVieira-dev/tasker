@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import useDropdownMenu from 'react-accessible-dropdown-menu-hook';
 import check from '../../assets/check.svg'
 import more from '../../assets/more.svg'
+
+import { useState } from 'react';
+import useDropdownMenu from 'react-accessible-dropdown-menu-hook';
 import { useFirestore } from '../../hooks/useFirestore'
 
 import './styles.scss'

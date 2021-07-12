@@ -6,8 +6,10 @@ import { FormEvent, useEffect, useState } from "react"
 
 import { Header } from '../../components/Header'
 
+import { useHistory } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useFirestore } from '../../hooks/useFirestore'
+
 
 
 
@@ -16,7 +18,7 @@ export function Tasks() {
     const [taskField, setTaskField] = useState('');
     const { user } = useAuth();
     const { tasklist, saveNewTask, getUserTasks } = useFirestore()
-
+    const history = useHistory()
 
     async function newTask(e: FormEvent) {
         e.preventDefault();
@@ -35,7 +37,7 @@ export function Tasks() {
     }
 
     useEffect(() => {
-        if (!user) { return }
+        if (!user) { return history.push('/login') }
         getUserTasks();
     }, [user, getUserTasks])
 

@@ -1,6 +1,6 @@
-import useDropdownMenu from 'react-accessible-dropdown-menu-hook';
 import userCircle from '../../assets/user-circle.svg'
 
+import useDropdownMenu from 'react-accessible-dropdown-menu-hook';
 import { useAuth } from '../../hooks/useAuth'
 
 import './styles.scss';
